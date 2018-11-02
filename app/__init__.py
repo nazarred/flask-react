@@ -3,14 +3,12 @@ from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_restful import Api
-from flask_api import FlaskAPI
+from flask_marshmallow import Marshmallow
 
-app = FlaskAPI(__name__)
+app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-login.login_view = 'login'
-api = Api(app)
+ma = Marshmallow(app)
 
 from app import routes, models

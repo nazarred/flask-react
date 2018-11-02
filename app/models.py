@@ -7,8 +7,6 @@ class Project(db.Model):
     colour = db.Column(db.String(8))
     tasks = db.relationship('Task', backref='project', lazy='dynamic')
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
     def __repr__(self):
         return self.name
 

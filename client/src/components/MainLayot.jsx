@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 import AsideSchedule from './AsideSchedule'
 import Projects from './Projects'
 import Content from './Content'
-import TaskAddForm from './TaskAddForm'
-import FormShowLink from './FormShowLink'
 
 import '../style.css'
 
-class Home extends Component {
+class MainLayot extends Component {
   state = {
     showTaskAddForm: false,
     showProjectAddForm: false,
@@ -30,8 +28,7 @@ class Home extends Component {
         </aside>
         <div className="content">
           <Content/>
-          { this.state.showTaskAddForm ? <TaskAddForm handleTaskFormShow={this.handleTaskFormShow}/> :
-              <FormShowLink handleTaskFormShow={this.handleTaskFormShow}/> }
+
         </div>
       </div>
     );
@@ -44,4 +41,4 @@ const mapStateToProps = function(store) {
   };
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(MainLayot);

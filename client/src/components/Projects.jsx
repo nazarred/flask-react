@@ -3,12 +3,24 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import {projectsList} from "../actions";
+import ProjectAddForm from './ProjectAddForm'
+import FormShowLink from "./FormShowLink";
 
 
 class Projects extends Component {
 
+  state = {
+    showProjectAddForm: false,
+    url: 'http://0.0.0.0:5000/api/projects/',
+  };
+
+  handleProjectFormShow = (event) => {
+    event.preventDefault();
+    this.setState({showProjectAddForm: !this.state.showProjectAddForm});
+  };
+
   componentDidMount() {
-    const url = 'http://0.0.0.0:5000/api/projects/';
+    const url = this.state.url;
     axios.get(url).then(response => {
         this.props.onGetProjects(response.data)
     });
@@ -28,6 +40,9 @@ class Projects extends Component {
         <ul>
           {projects}
         </ul>
+        { this.state.showProjectAddForm ?
+              <ProjectAddForm handleProjectFormShow={this.handleProjectFormShow}/> :
+              <FormShowLink handleFormShow={this.handleProjectFormShow}/> }
       </nav>
     );
   }

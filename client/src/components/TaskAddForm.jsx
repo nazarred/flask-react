@@ -2,13 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux';
 import ProjectsDropDown from './ProjectsDropDown'
 import axios from "axios/index";
-import {tasksList} from "../actions";
+import {tasksList, tasksByProject} from "../actions";
 
 const TaskAddForm = (props) => {
     const addTask = (event) => {
       event.preventDefault();
-      console.log(props.params.match.project_id)
-
       const data = new FormData(event.target);
       let url = 'http://0.0.0.0:5000/api/task/create/';
       axios.post(url, {
@@ -18,9 +16,9 @@ const TaskAddForm = (props) => {
         project: data.get('project'),
       });
       props.handleTaskFormShow(event);
-      url = 'http://0.0.0.0:5000/api/tasks/by-days';
+      url = props.url;
       axios.get(url).then(response => {
-      props.onGetTasks(response.data)
+      props.dispatchToStore(response.data)
     });
     };
 
@@ -45,12 +43,5 @@ const TaskAddForm = (props) => {
     )
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onGetTasks: tasks => {
-      dispatch(tasksList(tasks));
-    }
-  };
-};
 
-export default connect(null, mapDispatchToProps)(TaskAddForm)
+export default TaskAddForm

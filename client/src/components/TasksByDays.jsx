@@ -2,17 +2,18 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import TaskList from "./TaskList";
-import {tasksByProject} from "../actions"
+import TasksForToday from './TasksForToday'
+import TasksNextDays from './TasksNextDays'
+import { tasksList } from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
 
 
-
-class TasksByProjects extends Component {
+class TasksByDays extends Component {
 
   state = {
     showTaskAddForm: false,
-    url: ''
+    url: 'http://0.0.0.0:5000/api/tasks/by-days/',
   };
 
   handleTaskFormShow = (event) => {
@@ -21,21 +22,23 @@ class TasksByProjects extends Component {
   };
 
   componentDidMount() {
-    const id = this.props.match.params.project_id;
-    const url = 'http://0.0.0.0:5000/api/projects/' + id + '/tasks/';
+    const url = this.state.url;
     axios.get(url).then(response => {
         this.props.onGetTasks(response.data)
     });
-    this.setState({url: url});
   }
 
   render() {
+    const day = this.props.match.params.day;
     return (
       <div>
-          <TaskList tasks={this.props.tasks}/>
-          { this.state.showTaskAddForm ?
+        <div>
+          <TasksForToday tasks={this.props.tasks.today}/>
+        </div>
+          { day == 'next-days' ? <TasksNextDays tasks={this.props.tasks} /> : null }
+        { this.state.showTaskAddForm ?
               <TaskAddForm handleTaskFormShow={this.handleTaskFormShow} url={this.state.url} dispatchToStore={this.props.onGetTasks}/> :
-              <FormShowLink handleTaskFormShow={this.handleTaskFormShow}/> }
+              <FormShowLink handleFormShow={this.handleTaskFormShow}/> }
       </div>
     );
   }
@@ -43,16 +46,16 @@ class TasksByProjects extends Component {
 
 const mapStateToProps = function(store) {
   return {
-    tasks: store.taskState.by_project
+    tasks: store.taskState
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onGetTasks: tasks => {
-      dispatch(tasksByProject(tasks));
+      dispatch(tasksList(tasks));
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TasksByProjects);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksByDays);

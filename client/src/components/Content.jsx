@@ -1,16 +1,14 @@
 import React from 'react';
 
 import {Route, Switch} from "react-router-dom";
-import TasksForToday from "./TasksForToday";
-import TasksNextDays from "./TasksNextDays";
+import TasksByDays from "./TasksByDays";
 import TasksByProjects from "./TasksByProjects"
 
 
 const Content = () => (
   <main>
     <Switch>
-      <Route path='/tasks/today' component={TasksForToday}/>
-      <Route path='/tasks/next-days' component={TasksNextDays}/>
+      <Route path='/tasks/:day' component={TasksByDays}/>
       <Route path='/projects/:project_id' component={TasksByProjects}/>
     </Switch>
   </main>

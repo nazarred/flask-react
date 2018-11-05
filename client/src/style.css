@@ -1,0 +1,72 @@
+body {
+    background-color: #7ab5d3;
+    margin: 0px;
+}
+
+input[type=text] {
+    width: 60%;
+    padding: 7px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=button], input[type=submit], input[type=reset], .button {
+    background-color: #4CAF50;
+    border: solid;
+    border-width: 2px;
+    border-color: #4CAF50;
+    color: white;
+    padding: 10px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button.cancel {
+    background-color: white;
+    color: black;
+
+}
+
+select {
+    width: 25%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+}
+
+.primary-aside, .content{
+    position: absolute;
+    overflow: auto; padding: 10px;
+}
+
+
+.primary-header {
+    height: 48px;
+    background-color: blue;
+    padding: 0px 20px;
+}
+
+.primary-header span{
+    line-height: 48px;
+}
+
+.primary-aside, .content {
+    height: 100%;
+}
+
+.primary-aside {
+    width: 25%;
+    top: 56px;
+}
+
+.content {
+    width: 50%;
+    top: 48px;
+    background-color: #ffffff;
+
+    left: 25%;
+    bottom: 0;
+    right: 0;
+   }

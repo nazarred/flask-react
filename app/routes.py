@@ -39,6 +39,24 @@ class TasksListAPI(ModelListApiView):
 app.add_url_rule('/api/tasks/', view_func=TasksListAPI.as_view('tasks'))
 
 
+class TaskCreateAPI(ModelCreateApiView):
+    model = Task
+    schema = task_schema
+
+    def post(self):
+        json_data = request.get_json()
+        if not json_data:
+            return jsonify({'message': 'No input data provided'}), 400
+        obj = self.schema.load(json_data).data
+        db.session.add(obj)
+        db.session.commit()
+        result = self.schema.dump(obj)
+        return jsonify(result)
+
+
+app.add_url_rule('/api/task/create/', view_func=TaskCreateAPI.as_view('task-create'))
+
+
 class TaskDetailAPI(ModelDetailApiView):
     model = Task
     schema = task_schema
@@ -60,24 +78,6 @@ class TaskDetailAPI(ModelDetailApiView):
 app.add_url_rule('/api/tasks/<id>/', view_func=TaskDetailAPI.as_view('task'))
 
 
-class TaskCreateAPI(ModelCreateApiView):
-    model = Task
-    schema = task_schema
-
-    def post(self):
-        json_data = request.get_json()
-        if not json_data:
-            return jsonify({'message': 'No input data provided'}), 400
-        obj = self.schema.load(json_data).data
-        db.session.add(obj)
-        db.session.commit()
-        result = self.schema.dump(obj)
-        return jsonify(result)
-
-
-app.add_url_rule('/api/task/create/', view_func=TaskCreateAPI.as_view('task-create'))
-
-
 class ProjectTasksApi(ModelListApiView):
     model = Task
     schema = tasks_schema
@@ -89,3 +89,33 @@ class ProjectTasksApi(ModelListApiView):
 
 
 app.add_url_rule('/api/projects/<id>/tasks/', view_func=ProjectTasksApi.as_view('project-tasks'))
+
+
+class TasksByDayApi(ModelListApiView):
+    model = Task
+    schema = tasks_schema
+
+    def get_queryset(self, **kwargs):
+        day = kwargs.get('day')
+        tasks = self.model.query.filter_by(deadline=day).all()
+        return tasks
+
+
+app.add_url_rule('/api/tasks/day/<day>/', view_func=TasksByDayApi.as_view('tasks-by-day'))
+
+DAYS = ['today', 'tomorrow', 'day_after_t']
+
+
+class AllTasksByDaysAPI(TasksByDayApi):
+    model = Task
+    schema = tasks_schema
+
+    def get(self):
+        result = {}
+        for day in DAYS:
+            qs = self.get_queryset(day=day)
+            result[day] = self.schema.dump(qs).data
+        return jsonify(result)
+
+
+app.add_url_rule('/api/tasks/by-days/', view_func=AllTasksByDaysAPI.as_view('all-tasks-by-days'))

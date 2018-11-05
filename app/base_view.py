@@ -1,39 +1,43 @@
 from app import db
 from flask import request, jsonify
 from flask.views import MethodView
+from app.mixins import SchemaMixin
 
 
-class ModelListApiView(MethodView):
+class ModelApiView(SchemaMixin, MethodView):
     model = None
-    schema = None
 
     def get_queryset(self, **kwargs):
-        return self.model.query.all()
+        filter_data = request.args
+
+        query = db.session.query(self.model)
+        for attr, value in filter_data.items():
+            try:
+                query = query.filter(getattr(self.model, attr) == value)
+            except AttributeError:
+                return []
+        return query.all()
 
     def get(self, **kwargs):
+        schema = self.get_schema(many=True)
         qs = self.get_queryset(**kwargs)
-        result = self.schema.dump(qs)
+        result = schema.dump(qs)
         return jsonify(result.data)
 
-
-class ModelCreateApiView(MethodView):
-    model = None
-    schema = None
-
     def post(self):
+        schema = self.get_schema()
         json_data = request.get_json()
         if not json_data:
             return jsonify({'message': 'No input data provided'}), 400
-        obj = self.schema.load(json_data).data
-        db.session.add(obj)
-        db.session.commit()
-        result = self.schema.dump(obj)
-        return jsonify(result)
+        obj, error = schema.save(json_data)
+        if error:
+            return jsonify(error)
+        result = schema.dump(obj)
+        return jsonify(result.data)
 
 
-class ModelDetailApiView(MethodView):
+class ModelDetailApiView(SchemaMixin, MethodView):
     model = None
-    schema = None
     slug_name = 'id'
 
     def get_object(self, **kwargs):
@@ -41,8 +45,9 @@ class ModelDetailApiView(MethodView):
         return self.model.query.get(int(obj_id))
 
     def get(self, **kwargs):
+        schema = self.get_schema()
         obj = self.get_object(**kwargs)
-        result = self.schema.dump(obj)
+        result = schema.dump(obj)
         return jsonify(result.data)
 
     def delete(self, **kwargs):
@@ -52,10 +57,13 @@ class ModelDetailApiView(MethodView):
         return jsonify({'delete': 'ok'})
 
     def put(self, **kwargs):
+        schema = self.get_schema()
         obj = self.get_object(**kwargs)
-        for field, value in request.get_json().items():
-            setattr(obj, field, value)
-        db.session.add(obj)
-        db.session.commit()
-        result = self.schema.dump(obj)
+        obj_data = schema.dump(obj).data
+        json_data = request.get_json()
+        obj_data.update(json_data)
+        obj, error = schema.save(obj_data)
+        if error:
+            return jsonify(error)
+        result = schema.dump(obj)
         return jsonify(result.data)

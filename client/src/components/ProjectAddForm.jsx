@@ -9,13 +9,12 @@ const ProjectAddForm = (props) => {
     const addProject = (event) => {
       event.preventDefault();
       const data = new FormData(event.target);
-      let url = 'http://0.0.0.0:5000/api/project/create/';
+      let url = 'http://0.0.0.0:5000/api/projects/';
       axios.post(url, {
         name: data.get('name'),
         colour: data.get('colour'),
       });
       props.handleProjectFormShow(event);
-      url = props.url;
       axios.get(url).then(response => {
         props.onGetProjects(response.data)
     });

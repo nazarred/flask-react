@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import TaskList from "./TaskList";
 import TasksForToday from './TasksForToday'
 import TasksNextDays from './TasksNextDays'
 import { tasksList } from "../actions"

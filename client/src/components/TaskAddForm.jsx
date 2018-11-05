@@ -1,14 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux';
 import ProjectsDropDown from './ProjectsDropDown'
 import axios from "axios/index";
-import {tasksList, tasksByProject} from "../actions";
 
 const TaskAddForm = (props) => {
     const addTask = (event) => {
       event.preventDefault();
       const data = new FormData(event.target);
-      let url = 'http://0.0.0.0:5000/api/task/create/';
+      let url = 'http://0.0.0.0:5000/api/tasks/';
       axios.post(url, {
         name: data.get('name'),
         deadline: data.get('deadline'),
@@ -38,7 +36,6 @@ const TaskAddForm = (props) => {
             </select>
             <input type="submit" value="Submit" className="button"/>
             <button className="button cancel">Cancel</button>
-
         </form>
     )
 };

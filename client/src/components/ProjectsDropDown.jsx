@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 
-class ProjectsDropDown extends Component {
+const ProjectsDropDown = (props) => {
 
-  render() {
-    const projects = this.props.projects.map((project, index) =>
+    const projects = props.projects.map((project, index) =>
         <option key={project.id} value={project.id}>{project.name}</option>
     );
 
@@ -14,8 +13,7 @@ class ProjectsDropDown extends Component {
             {projects}
         </select>
     );
-  }
-}
+};
 
 const mapStateToProps = function(store) {
   return {

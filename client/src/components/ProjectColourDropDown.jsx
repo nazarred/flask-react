@@ -9,7 +9,7 @@ const ProjectColourDropDown = (props) => {
     );
 
     return (
-        <select name="project">
+        <select name="colour">
             {colours}
         </select>
     );

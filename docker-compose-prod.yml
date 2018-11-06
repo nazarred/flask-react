@@ -21,4 +21,14 @@ services:
       - .:/app
     depends_on:
     - postgres
-    command: /bin/bash ./docker_script_dev.sh
+    command: /bin/bash ./docker_script_prod.sh
+
+  nginx:
+    build:
+      context: ./deploy/nginx/
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - app

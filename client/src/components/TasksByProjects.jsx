@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import TaskList from "./TaskList";
-import {addTaskByProject, tasksByProject} from "../actions"
+import {addTask, tasksList} from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
 import { clientGetTaskListByProject } from '../services/TaskServices'
@@ -50,17 +49,17 @@ class TasksByProjects extends Component {
 
 const mapStateToProps = function(store) {
   return {
-    tasks: store.taskState.by_project
+    tasks: store.taskState
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onGetTasks: tasks => {
-      dispatch(tasksByProject(tasks));
+      dispatch(tasksList(tasks));
     },
     onAddTask: (task) => {
-      dispatch(addTaskByProject(task));
+      dispatch(addTask(task));
     },
   };
 };

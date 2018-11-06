@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ProjectsDropDown from './ProjectsDropDown';
 import { clientAddTask } from "../services/TaskServices";
-import { addTask } from "../actions";
 
 const TaskAddForm = (props) => {
   const handleFormSubmit = (event) => {
@@ -35,5 +35,9 @@ const TaskAddForm = (props) => {
   );
 };
 
+TaskAddForm.propTypes = {
+  onAddTask: PropTypes.func.isRequired,
+  handleTaskFormShow: PropTypes.func.isRequired,
+};
 
 export default TaskAddForm;

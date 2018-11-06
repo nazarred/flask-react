@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addProject } from '../actions';
 import ProjectColourDropDown from './ProjectColourDropDown';
 import { clientAddProject } from '../services/ProjectServices';
@@ -33,5 +34,10 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+
+ProjectAddForm.propTypes = {
+  onAddProject: PropTypes.func.isRequired,
+  handleProjectFormShow: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(ProjectAddForm);

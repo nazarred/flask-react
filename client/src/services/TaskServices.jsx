@@ -1,7 +1,7 @@
 import client from './Client';
 
-export function clientGetTaskListByDays() {
-  const url = 'tasks/by-days/';
+export function clientGetTaskListByDay(day) {
+  const url = day === 'next-days' ? 'tasks/' : `tasks/?deadline=${day}`;
   return client.get(url);
 }
 

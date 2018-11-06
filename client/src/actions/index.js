@@ -1,6 +1,5 @@
 import {
-  ADD_PROJECT, ADD_TASK_BY_DAYS, ADD_TASK_BY_PROJECT, DELETE_PROJECT, PROJECTS_LIST, TASK_LIST, TASKS_BY_PROJECT,
-} from './actions-type';
+  ADD_PROJECT, ADD_TASK, DELETE_PROJECT, PROJECTS_LIST, TASK_LIST } from './actions-type';
 
 export const addProject = data => ({
   type: ADD_PROJECT,
@@ -32,21 +31,7 @@ export const tasksList = tasks => (dispatch) => {
   );
 };
 
-export const addTaskByDays = data => ({
-  type: ADD_TASK_BY_DAYS,
-  payload: data,
+export const addTask = task => ({
+  type: ADD_TASK,
+  payload: task,
 });
-
-export const addTaskByProject = data => ({
-  type: ADD_TASK_BY_PROJECT,
-  payload: data,
-});
-
-export const tasksByProject = tasks => (dispatch) => {
-  dispatch(
-    {
-      type: TASKS_BY_PROJECT,
-      payload: tasks,
-    },
-  );
-};

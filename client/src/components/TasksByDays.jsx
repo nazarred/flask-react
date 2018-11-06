@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import TasksForToday from './TasksForToday'
+import TasksForOneDay from './TasksForOneDay'
 import TasksNextDays from './TasksNextDays'
-import {addTaskByDays, tasksList} from "../actions"
+import {addTask, tasksList} from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
-import { clientGetTaskListByDays } from '../services/TaskServices'
+import {clientGetTaskListByDay, clientGetTaskListByProject} from '../services/TaskServices'
 
 
 class TasksByDays extends Component {
 
   state = {
     showTaskAddForm: false,
+    day: 'today'
   };
 
   handleTaskFormShow = (event) => {
@@ -20,19 +21,28 @@ class TasksByDays extends Component {
   };
 
   componentDidMount() {
-    clientGetTaskListByDays().then(response => {
+    const day = this.props.match.params.day;
+    this.setState({day: day});
+    clientGetTaskListByDay(day).then(response => {
         this.props.onGetTasks(response.data)
     });
   }
 
+ componentDidUpdate(prevProps) {
+  const day = this.props.match.params.day;
+  if (prevProps.match.params.day !== day) {
+  this.setState({day: day});
+  clientGetTaskListByDay(day).then(response => {
+      this.props.onGetTasks(response.data)
+    });
+   }
+ }
+
   render() {
-    const day = this.props.match.params.day;
+    const day = this.state.day;
     return (
       <div>
-        <div>
-          <TasksForToday tasks={this.props.tasks.today}/>
-        </div>
-          { day === 'next-days' ? <TasksNextDays tasks={this.props.tasks} /> : null }
+        { day === 'next-days' ? <TasksNextDays tasks={this.props.tasks} day={day} /> : <TasksForOneDay tasks={this.props.tasks} day={day} /> }
         { this.state.showTaskAddForm ?
             <TaskAddForm handleTaskFormShow={this.handleTaskFormShow} onAddTask={this.props.onAddTask}/> :
             <FormShowLink handleFormShow={this.handleTaskFormShow}/> }
@@ -43,7 +53,7 @@ class TasksByDays extends Component {
 
 const mapStateToProps = function(store) {
   return {
-    tasks: store.taskState.by_days
+    tasks: store.taskState
   };
 };
 
@@ -53,7 +63,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(tasksList(tasks));
     },
     onAddTask: (task) => {
-      dispatch(addTaskByDays(task));
+      dispatch(addTask(task));
     },
   };
 };

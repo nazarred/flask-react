@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 
 const ProjectsDropDown = (props) => {
@@ -16,5 +17,8 @@ const mapStateToProps = store => ({
   projects: store.projectState,
 });
 
+ProjectsDropDown.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default connect(mapStateToProps)(ProjectsDropDown);

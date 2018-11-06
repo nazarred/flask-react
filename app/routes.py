@@ -49,23 +49,20 @@ class ProjectTasksApi(ModelApiView):
         query = self.filter_query_by_field(query, 'project_id', project_id)
         return query
 
-    
+
 app.add_url_rule('/api/projects/<id>/tasks/', view_func=ProjectTasksApi.as_view('project-tasks'))
 
 
-class AllTasksByDaysAPI(ModelDetailApiView):
+class AllTasksByDaysAPI(ModelApiView):
     model = Task
     schema_class = TaskSchema
 
-    def get_queryset(self, day):
-        tasks = self.model.query.filter_by(deadline=day).all()
-        return tasks
-
-    def get(self):
+    def get(self, **kwargs):
         schema = self.get_schema(many=True)
+        query = self.get_query(**kwargs)
         result = {}
         for day in TaskSchema.DEADLINES:
-            qs = self.get_queryset(day=day)
+            qs = self.filter_query_by_field(query, 'deadline', day)
             result[day] = schema.dump(qs).data
         return jsonify(result)
 

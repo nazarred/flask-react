@@ -43,12 +43,13 @@ class ProjectTasksApi(ModelApiView):
     model = Task
     schema_class = TaskSchema
 
-    def get_queryset(self, **kwargs):
+    def get_query(self, **kwargs):
+        query = super(ProjectTasksApi, self).get_query(**kwargs)
         project_id = kwargs.get('id')
-        tasks = self.model.query.filter_by(project_id=int(project_id)).all()
-        return tasks
+        query = self.filter_query_by_field(query, 'project_id', project_id)
+        return query
 
-
+    
 app.add_url_rule('/api/projects/<id>/tasks/', view_func=ProjectTasksApi.as_view('project-tasks'))
 
 

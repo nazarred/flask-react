@@ -7,20 +7,27 @@ from app.mixins import SchemaMixin
 class ModelApiView(SchemaMixin, MethodView):
     model = None
 
-    def get_queryset(self, **kwargs):
-        filter_data = request.args
+    def get_query(self, **kwargs):
+        # kwargs use when you need override this method
+        return db.session.query(self.model)
 
-        query = db.session.query(self.model)
-        for attr, value in filter_data.items():
+    def filter_query_by_field(self, query, field, value):
+        return query.filter(getattr(self.model, field) == value)
+
+    def get_filtered_query(self, **kwargs):
+        query = self.get_query(**kwargs)
+
+        filter_data = request.args
+        for field, value in filter_data.items():
             try:
-                query = query.filter(getattr(self.model, attr) == value)
+                query = self.filter_query_by_field(query, field, value)
             except AttributeError:
                 return []
         return query.all()
 
     def get(self, **kwargs):
         schema = self.get_schema(many=True)
-        qs = self.get_queryset(**kwargs)
+        qs = self.get_filtered_query(**kwargs)
         result = schema.dump(qs)
         return jsonify(result.data)
 

@@ -5,6 +5,11 @@ export function clientGetTaskListByDays() {
   return client.get(url);
 }
 
+export function clientGetTaskListByProject(id) {
+  const url = `projects/${id}/tasks/`;
+  return client.get(url);
+}
+
 export function clientAddTask(data) {
   const url = 'tasks/';
   return client.post(url, {

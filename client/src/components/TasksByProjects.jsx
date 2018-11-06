@@ -5,6 +5,7 @@ import TaskList from "./TaskList";
 import {addTaskByProject, tasksByProject} from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
+import { clientGetTaskListByProject } from '../services/TaskServices'
 
 
 
@@ -21,21 +22,17 @@ class TasksByProjects extends Component {
 
   componentDidMount() {
     const id = this.props.match.params.project_id;
-    const url = 'http://0.0.0.0:5000/api/projects/' + id + '/tasks/';
-    axios.get(url).then(response => {
+    clientGetTaskListByProject(id).then(response => {
         this.props.onGetTasks(response.data)
     });
-    // this.setState({url: url});
   }
 
    componentDidUpdate(prevProps) {
      if (prevProps.match.params.project_id !== this.props.match.params.project_id) {
        const id = this.props.match.params.project_id;
-       const url = 'http://0.0.0.0:5000/api/projects/' + id + '/tasks/';
-       axios.get(url).then(response => {
+       clientGetTaskListByProject(id).then(response => {
           this.props.onGetTasks(response.data)
        });
-       this.setState({url: url});
      }
    }
 

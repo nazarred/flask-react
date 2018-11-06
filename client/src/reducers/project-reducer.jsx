@@ -3,21 +3,20 @@ import { ADD_PROJECT, DELETE_PROJECT, PROJECTS_LIST } from '../actions/actions-t
 const initialState = [
 ];
 
-const projectReducer = function(state = initialState, action) {
-
-  switch(action.type) {
+const projectReducer = function (state = initialState, action) {
+  let newState;
+  switch (action.type) {
     case PROJECTS_LIST:
-      var new_state = action.payload;
-      return new_state;
+      newState = action.payload;
+      return newState;
     case ADD_PROJECT:
-      new_state = state.concat([action.payload]);
-      return new_state;
+      newState = state.concat([action.payload]);
+      return newState;
     case DELETE_PROJECT:
       return state.filter(post => post !== action.payload.name);
     default:
       return state;
   }
-
 };
 
 export default projectReducer;

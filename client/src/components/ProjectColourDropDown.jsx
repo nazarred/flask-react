@@ -1,25 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import constants from '../constants';
 
 
-const ProjectColourDropDown = (props) => {
+const ProjectColourDropDown = () => {
+  const colours = constants.colours.project.map((colour, index) => <option key={index} value={colour}>{colour}</option>);
 
-    const colours = props.colours.map((colour, index) =>
-        <option key={index} value={colour}>{colour}</option>
-    );
-
-    return (
-        <select name="colour">
-            {colours}
-        </select>
-    );
-};
-
-const mapStateToProps = function(store) {
-  return {
-    colours: store.colourState.project
-  };
+  return (
+    <select name="colour">
+      {colours}
+    </select>
+  );
 };
 
 
-export default connect(mapStateToProps)(ProjectColourDropDown);
+export default ProjectColourDropDown;

@@ -3,12 +3,12 @@ import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 
 
-import MainLayot from "./components/MainLayot";
+import MainLayout from "./components/MainLayout";
 
 export default (
   <BrowserRouter>
-      <div className='p-5'>
-          <Route path="/" component={MainLayot} />
+      <div>
+          <Route path="/" component={MainLayout} />
       </div>
   </BrowserRouter>
 );

@@ -1,25 +1,22 @@
 import React from 'react';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-const AsideSchedule = ({imageUrl, title, slug}) => {
+const AsideSchedule = () => (
+  <nav>
+    <ul>
+      <li>
+        <Link to="/tasks/today">
+          Today
+        </Link>
+      </li>
+      <li>
+        <Link to="/tasks/next-days/">
+          Next Days
+        </Link>
+      </li>
+    </ul>
+  </nav>
+);
 
-    return(
-            <nav>
-                <ul>
-                    <li>
-                        <Link to={`/tasks/today`}>
-                            Today
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={`/tasks/next-days/`}>
-                            Next Days
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-    )
-};
-
-export default AsideSchedule
+export default AsideSchedule;

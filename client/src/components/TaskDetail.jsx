@@ -1,13 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-const Task = (props) => {
+const Task = props => (
+  <span>
+    {props.task.name}
+    {props.task.project}
+  </span>
+);
 
-    return(
-        <span>
-            {props.task.name}
-            {props.task.project}
-        </span>
-    )
-};
-
-export default Task
+export default Task;

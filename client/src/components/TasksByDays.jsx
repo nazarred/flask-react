@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import TasksForToday from './TasksForToday'
 import TasksNextDays from './TasksNextDays'
-import { tasksList } from "../actions"
+import {addTaskByDays, tasksList} from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
+import { clientGetTaskListByDays } from '../services/TaskServices'
 
 
 class TasksByDays extends Component {
 
   state = {
     showTaskAddForm: false,
-    url: 'http://0.0.0.0:5000/api/tasks/by-days/',
   };
 
   handleTaskFormShow = (event) => {
@@ -21,8 +20,7 @@ class TasksByDays extends Component {
   };
 
   componentDidMount() {
-    const url = this.state.url;
-    axios.get(url).then(response => {
+    clientGetTaskListByDays().then(response => {
         this.props.onGetTasks(response.data)
     });
   }
@@ -34,10 +32,10 @@ class TasksByDays extends Component {
         <div>
           <TasksForToday tasks={this.props.tasks.today}/>
         </div>
-          { day == 'next-days' ? <TasksNextDays tasks={this.props.tasks} /> : null }
+          { day === 'next-days' ? <TasksNextDays tasks={this.props.tasks} /> : null }
         { this.state.showTaskAddForm ?
-              <TaskAddForm handleTaskFormShow={this.handleTaskFormShow} url={this.state.url} dispatchToStore={this.props.onGetTasks}/> :
-              <FormShowLink handleFormShow={this.handleTaskFormShow}/> }
+            <TaskAddForm handleTaskFormShow={this.handleTaskFormShow} onAddTask={this.props.onAddTask}/> :
+            <FormShowLink handleFormShow={this.handleTaskFormShow}/> }
       </div>
     );
   }
@@ -45,7 +43,7 @@ class TasksByDays extends Component {
 
 const mapStateToProps = function(store) {
   return {
-    tasks: store.taskState
+    tasks: store.taskState.by_days
   };
 };
 
@@ -53,7 +51,10 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetTasks: tasks => {
       dispatch(tasksList(tasks));
-    }
+    },
+    onAddTask: (task) => {
+      dispatch(addTaskByDays(task));
+    },
   };
 };
 

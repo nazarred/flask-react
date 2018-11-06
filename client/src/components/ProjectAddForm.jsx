@@ -1,42 +1,37 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
-import axios from "axios/index";
-import { projectsList } from "../actions";
-import ProjectColourDropDown from "./ProjectColourDropDown";
+import { addProject } from '../actions';
+import ProjectColourDropDown from './ProjectColourDropDown';
+import { clientAddProject } from '../services/ProjectServices';
 
 
 const ProjectAddForm = (props) => {
-    const addProject = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.target);
-      let url = 'http://0.0.0.0:5000/api/projects/';
-      axios.post(url, {
-        name: data.get('name'),
-        colour: data.get('colour'),
-      });
-      props.handleProjectFormShow(event);
-      axios.get(url).then(response => {
-        props.onGetProjects(response.data)
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    clientAddProject(data.get('name'), data.get('colour')).then((response) => {
+      if (response.status === 200) {
+        props.onAddProject(response.data);
+      }
     });
-    };
-
-    return(
-        <form onSubmit={addProject}>
-            <input type='text' name='name' />
-            <ProjectColourDropDown/>
-            <input type="submit" value="Submit" className="button"/>
-            <button className="button cancel">Cancel</button>
-        </form>
-    )
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onGetProjects: tasks => {
-      dispatch(projectsList(tasks));
-    }
+    props.handleProjectFormShow(event);
   };
+
+  return (
+    <form onSubmit={handleFormSubmit}>
+      <input type="text" name="name" />
+      <ProjectColourDropDown />
+      <input type="submit" value="Submit" className="button" />
+      <button className="button cancel">Cancel</button>
+    </form>
+  );
 };
+
+const mapDispatchToProps = dispatch => ({
+  onAddProject: (project) => {
+    dispatch(addProject(project));
+  },
+});
 
 
 export default connect(null, mapDispatchToProps)(ProjectAddForm);

@@ -5,7 +5,7 @@ import TasksNextDays from './TasksNextDays'
 import {addTask, tasksList} from "../actions"
 import TaskAddForm from './TaskAddForm'
 import FormShowLink from './FormShowLink'
-import {clientGetTaskListByDay, clientGetTaskListByProject} from '../services/TaskServices'
+import {clientGetTaskListByDay} from '../services/TaskServices'
 
 
 class TasksByDays extends Component {

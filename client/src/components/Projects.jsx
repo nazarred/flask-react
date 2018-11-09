@@ -5,6 +5,7 @@ import { projectsList } from "../actions";
 import ProjectAddForm from './ProjectAddForm'
 import FormShowLink from "./FormShowLink";
 import { clientGetProjectList } from '../services/ProjectServices'
+import SimpleProject from './SimpleProject'
 
 
 class Projects extends Component {
@@ -28,7 +29,7 @@ class Projects extends Component {
     const projects = this.props.projects.map((project, index) =>
           <li key={project.id}>
             <Link to={`/projects/${project.id}`}>
-              {project.name}
+              <SimpleProject project={project} handleEdit={this.handleProjectFormShow} handleDelete={this.handleProjectFormShow}/>
             </Link>
           </li>
         );

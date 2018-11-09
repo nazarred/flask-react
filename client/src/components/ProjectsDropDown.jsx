@@ -18,7 +18,7 @@ const mapStateToProps = store => ({
 });
 
 ProjectsDropDown.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.string).isRequired,
+  projects: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(ProjectsDropDown);

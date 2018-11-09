@@ -1,5 +1,6 @@
 import {
-  ADD_PROJECT, ADD_TASK, DELETE_PROJECT, PROJECTS_LIST, TASK_LIST } from './actions-type';
+  ADD_PROJECT, ADD_TASK, DELETE_PROJECT, DELETE_TASK, PROJECTS_LIST, TASK_LIST, UPDATE_TASK
+} from './actions-type';
 
 export const addProject = data => ({
   type: ADD_PROJECT,
@@ -33,5 +34,17 @@ export const tasksList = tasks => (dispatch) => {
 
 export const addTask = task => ({
   type: ADD_TASK,
+  payload: task,
+});
+
+export const deleteTask = id => ({
+  type: DELETE_TASK,
+  payload: {
+    id,
+  },
+});
+
+export const updateTask = task => ({
+  type: UPDATE_TASK,
   payload: task,
 });

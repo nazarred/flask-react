@@ -1,12 +1,12 @@
 import React from 'react';
-import Task from './TaskDetail';
+import SimpleTask from './SimpleTask';
 import PropTypes from "prop-types";
 
 
 const TaskList = (props) => {
   const tasks = props.tasks.map((task, index) => (
     <li key={index}>
-      <Task task={task} />
+      <SimpleTask task={task} />
     </li>
   ));
 

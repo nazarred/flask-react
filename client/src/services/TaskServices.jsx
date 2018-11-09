@@ -19,3 +19,18 @@ export function clientAddTask(data) {
     project: data.get('project'),
   });
 }
+
+export function clientUpdateTask(data, id) {
+  const url = `tasks/${id}/`;
+  return client.put(url, {
+    name: data.get('name'),
+    deadline: data.get('deadline'),
+    priority: data.get('priority'),
+    project: data.get('project'),
+  });
+}
+
+export function clientDeleteTask(id) {
+  const url = `tasks/${id}/`;
+  return client.delete(url);
+}

@@ -69,4 +69,56 @@ select {
     left: 25%;
     bottom: 0;
     right: 0;
-   }
+}
+
+.task-detail {
+    position: relative;
+    padding-right: 20px;
+}
+
+.task-detail span{
+    display: inline-block;
+}
+
+ul.submenu {
+    display: none;
+    position: absolute;
+    width: 60px;
+    top: 16px;
+    left: -55px;
+    background-color: white;
+    padding: 2px;
+    z-index: 1;
+}
+
+ul.submenu > li {
+    display: block;
+}
+
+ul.submenu > li > a {
+    display: block;
+    padding: 2px;
+    color: white;
+    background-color: #4CAF50;
+    text-decoration: none;
+}
+
+.edit {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.edit-menu{
+    width: 20px;
+    display: inline-block;
+}
+
+.edit-menu:hover > ul.submenu {
+    display: block;
+}
+
+.task-detail:hover > div.edit {
+    display: block;
+}
